@@ -5,6 +5,7 @@ import {
   Vector3,
 } from 'three'
 import Asterisms from './Asterisms.js'
+import ColonizationLines from './ColonizationLines.js'
 import Planet from './Planet.js'
 import Star from './Star.js'
 import Stars from './Stars.js'
@@ -34,6 +35,7 @@ export default class Scene {
     // Loaded later
     this.stars = null
     this.asterisms = null
+    this.colonization = null
   }
 
 
@@ -353,6 +355,23 @@ export default class Scene {
     if (this.asterisms) {
       this.asterisms.visible = !this.asterisms.visible
     }
+  }
+
+
+  /** @returns {ColonizationLines|null} Lazily added to stars, or null if stars not yet loaded */
+  getColonization() {
+    if (this.colonization === null && this.stars) {
+      this.colonization = new ColonizationLines()
+      this.stars.add(this.colonization)
+    }
+    return this.colonization
+  }
+
+
+  /** @param {number} lightYears Distance of camera from its target */
+  setCameraDistance(lightYears) {
+    this.ui.camera.position.setLength(lightYears * Shared.LIGHTYEAR_METER)
+    this.ui.controls.update()
   }
 
 

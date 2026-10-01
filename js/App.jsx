@@ -7,13 +7,16 @@ import Stack from '@mui/material/Stack'
 import Celestiary from './Celestiary'
 import useStore from './store/useStore'
 import About from './ui/About'
+import ColonizationDrawer from './ui/ColonizationDrawer'
 import Settings from './ui/Settings'
 import TimePanel from './ui/TimePanel'
+import TooltipIconButton from './ui/TooltipIconButton'
 import TooltipToggleButton from './ui/TooltipToggleButton'
 import {setTitleFromLocation} from './utils'
 import SettingsIcon from '@mui/icons-material/Settings'
 import StarsIcon from '@mui/icons-material/AutoAwesome'
 import StarSelectIcon from '@mui/icons-material/SavedSearch'
+import WidgetsIcon from '@mui/icons-material/WidgetsOutlined'
 import './index.css'
 
 
@@ -23,6 +26,7 @@ export default function App() {
   const [celestiary, setCelestiary] = useState(null)
   const [isPaused, setIsPaused] = useState(false)
   const [timeStr, setTimeStr] = useState('')
+  const [isWidgetsOpen, setIsWidgetsOpen] = useState(false)
 
   const sceneRef = useRef(null)
   const navRef = useRef(null)
@@ -44,6 +48,7 @@ export default function App() {
       <div ref={sceneRef} id='scene-id'/>
       <div ref={navRef} id='nav-id' className='panel'>Welcome to Celestiary!  Loading...</div>
       <Stack id='top-right' className='panel' direction='column' justifyContent='flex-start' alignItems='flex-end'>
+        <TooltipIconButton tip='Widgets' onClick={() => setIsWidgetsOpen(!isWidgetsOpen)} icon={<WidgetsIcon/>}/>
         {celestiary && <TimePanel time={celestiary.time} timeStr={timeStr} isPaused={isPaused} setIsPaused={setIsPaused}/>}
         <div id='text-buttons'>
           {celestiary &&
@@ -61,6 +66,12 @@ export default function App() {
         </div>
         <TooltipToggleButton tip='select' icon={<StarSelectIcon/>} onClick={toggleIsStarsSelectActive}/>
       </Stack>
+      {celestiary &&
+        <ColonizationDrawer
+          scene={celestiary.scene}
+          isOpen={isWidgetsOpen}
+          onClose={() => setIsWidgetsOpen(false)}
+        />}
       <h1 id='target-id'> </h1>
     </>)
 }
