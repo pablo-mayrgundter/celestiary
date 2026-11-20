@@ -132,6 +132,40 @@ export function plateTemperature(dist) {
 }
 
 
+/**
+ * Radiative-equilibrium temperature of a small grey sphere above the
+ * photosphere: one that absorbs sunlight over the solid angle the Sun fills
+ * and re-radiates over its whole surface.  Independent of the sphere's
+ * emissivity as long as that equals its absorptivity.  Far out this is the
+ * familiar T_sun * sqrt(R / 2d); at the photosphere the Sun fills half the
+ * sky and it reaches T_sun / 2^(1/4).  This is the lander's passive floor:
+ * what the hull would settle at with no ablation, cooling or reflective coat.
+ *
+ * @param {number} dist Meters from the Sun's center, >= R_SUN
+ * @returns {number} Kelvin
+ */
+export function sphereTemperature(dist) {
+  const cosSunHalfAngle = Math.sqrt(Math.max(0, 1 - Math.pow(R_SUN / dist, 2)))
+  return T_EFF_SUN * Math.pow((1 - cosSunHalfAngle) / 2, 0.25)
+}
+
+
+/**
+ * Inverse of sphereTemperature: how close a passive grey sphere can come
+ * before it reaches a temperature.
+ *
+ * @param {number} kelvin
+ * @returns {number} Meters from the Sun's center; R_SUN if it never gets that hot
+ */
+export function sphereTemperatureDistance(kelvin) {
+  const skyFraction = Math.pow(kelvin / T_EFF_SUN, 4)
+  if (skyFraction >= 0.5) {
+    return R_SUN
+  }
+  return R_SUN / Math.sqrt(1 - Math.pow(1 - (2 * skyFraction), 2))
+}
+
+
 /** @returns {number} Angle between two vectors, radians */
 function angleBetween(a, b) {
   return Math.acos(Math.max(-1, Math.min(1, dot(a, b) / (norm(a) * norm(b)))))

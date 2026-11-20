@@ -88,16 +88,29 @@ Alternatives the model sizes but does not animate:
 The descent by altitude. Layer names are the standard picture's; their temperatures, and how
 well each is agreed, are in [psp-working-study.md](psp-working-study.md) section 4.
 
-| Crossing | Height above the photosphere | Time to go | Speed (km/s) | Angle below horizontal | Sunlight | Black-plate temperature (K) |
-| --- | --- | --- | --- | --- | --- | --- |
-| Release from the relay orbit | 34.47 Rs | 4.51 d | 17.2 | 0.0° | 50 kW/m² (37 suns) | 969 |
-| Parker's closest approach | 8.86 Rs | 8.2 h | 168.0 | 68.4° | 647 kW/m² (476 suns) | 1,838 |
-| One solar radius up | 1.00 Rs | 51.8 min | 424.6 | 44.2° | 15.7 MW/m² (11,561 suns) | 4,081 |
-| Inner corona | 0.10 Rs | 12.6 min | 580.0 | 17.3° | 52.0 MW/m² (38,218 suns) | 5,503 |
-| Low corona | 10,000 km | 4.7 min | 604.7 | 6.7° | 61.2 MW/m² (44,943 suns) | 5,731 |
-| Top of the chromosphere | 2,000 km | 2.1 min | 608.2 | 3.0° | 62.6 MW/m² (45,980 suns) | 5,764 |
-| Temperature minimum | 500 km | 1.0 min | 608.9 | 1.5° | 62.8 MW/m² (46,178 suns) | 5,770 |
-| Photosphere, optical depth 1 | 0 km | 0 s | 609.1 | 0.0° | 62.9 MW/m² (46,244 suns) | 5,772 |
+| Crossing | Height above the photosphere | Time to go | Speed (km/s) | Angle below horizontal | Sunlight | Sun-facing plate (K) | Whole sphere (K) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Release from the relay orbit | 34.47 Rs | 4.51 d | 17.2 | 0.0° | 50 kW/m² (37 suns) | 969 | 685 |
+| Parker's closest approach | 8.86 Rs | 8.2 h | 168.0 | 68.4° | 647 kW/m² (476 suns) | 1,838 | 1,301 |
+| One solar radius up | 1.00 Rs | 51.8 min | 424.6 | 44.2° | 15.7 MW/m² (11,561 suns) | 4,081 | 2,936 |
+| Inner corona | 0.10 Rs | 12.6 min | 580.0 | 17.3° | 52.0 MW/m² (38,218 suns) | 5,503 | 4,242 |
+| Passive hull limit (see below) | 0.06 Rs | 10.0 min | 590.1 | 14.0° | 55.6 MW/m² (40,868 suns) | 5,596 | 4,373 |
+| Low corona | 10,000 km | 4.7 min | 604.7 | 6.7° | 61.2 MW/m² (44,943 suns) | 5,731 | 4,636 |
+| Top of the chromosphere | 2,000 km | 2.1 min | 608.2 | 3.0° | 62.6 MW/m² (45,980 suns) | 5,764 | 4,759 |
+| Temperature minimum | 500 km | 1.0 min | 608.9 | 1.5° | 62.8 MW/m² (46,178 suns) | 5,770 | 4,807 |
+| Photosphere, optical depth 1 | 0 km | 0 s | 609.1 | 0.0° | 62.9 MW/m² (46,244 suns) | 5,772 | 4,854 |
+
+The two temperatures are radiative equilibrium with nothing done about it: a black plate facing the
+Sun with an insulated back, and a grey sphere radiating from its whole surface, which is the
+lander's shape.
+
+**Passive hull limit.** The concept's hull material melts near 4,100 °C (4,373 K). The sphere
+reaches that by sunlight alone 0.06 Rs (44,349 km) above the photosphere,
+10.0 min before arrival, and would settle at 4,854 K at the photosphere itself.
+That is about 480 K over the limit, a narrower gap than the 1,400 °C the concept doc
+works from, because half the sphere's sky is still cold space until it sinks into the gas.
+Everything below that height has to be paid for by ablation, active cooling or reflectivity; this
+counts sunlight only, not the heating from moving through the gas at 600 km/s.
 
 A minimum-energy descent arrives level, not falling: it spends its last
 2.1 min below 2,000 km, skimming about

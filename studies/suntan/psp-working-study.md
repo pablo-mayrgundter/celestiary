@@ -130,6 +130,7 @@ Full tables and plots: [trajectory.md](trajectory.md). Model: `js/suntan/mission
 - **Lander from the relay orbit: 56.2 km/s to deorbit, 4.5 days to fall, 609 km/s on arrival.** From the final orbit's aphelion instead: 8.1 km/s, arriving at 616 km/s.
 - **The lander spends about 8 hours inside PSP's closest approach** on the way down, in sunlight rising from 0.65 to 63 MW/m².
 - **A minimum-energy descent arrives level, not falling.** It crosses the last 2,000 km (the chromosphere, in the standard picture of Section 4) in about two minutes while skimming some 76,000 km round the Sun; a straight drop crosses it in about three seconds. [trajectory.md](trajectory.md) section 3 has the descent by altitude.
+- **Passive hull limit.** By sunlight alone, a grey sphere reaches the concept's 4,100 °C hull limit about 44,000 km above the photosphere, ten minutes before arrival, and would settle near 4,850 K at the photosphere: about 480 K over the limit, not the 1,400 °C the concept doc works from, because half its sky is still cold space. This counts radiation only, not heating from moving through the gas at 600 km/s.
 
 ---
 

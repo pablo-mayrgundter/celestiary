@@ -12,7 +12,14 @@ import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import {AU, DAY, GM_SUN, R_SUN, TWO_PI, dot, visViva} from '../js/suntan/kepler.js'
 import {planetState} from '../js/suntan/ephemeris.js'
-import {SOLAR_CONSTANT, buildMission, plateTemperature, solarFlux} from '../js/suntan/mission.js'
+import {
+  SOLAR_CONSTANT,
+  buildMission,
+  plateTemperature,
+  solarFlux,
+  sphereTemperature,
+  sphereTemperatureDistance,
+} from '../js/suntan/mission.js'
 
 
 const outDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'studies', 'suntan')
@@ -58,11 +65,15 @@ const sailLoading = (4 * Math.PI * R_SUN * R_SUN * n.fluxAtSurface) / (TWO_PI * 
 // picture's; psp-working-study.md section 4 has their temperatures and how
 // well each is agreed.
 const KM = 1e3
+// The concept doc's hull limit: hafnium carbonitride melting near 4,100 C.
+const HULL_LIMIT_K = 4100 + 273.15
+const hullLimitAltitude = sphereTemperatureDistance(HULL_LIMIT_K) - R_SUN
 const profileStops = [
   [descent.orbit.apoapsis - R_SUN, 'Release from the relay orbit'],
   [pspPerihelion - R_SUN, 'Parker\'s closest approach'],
   [R_SUN, 'One solar radius up'],
   [0.1 * R_SUN, 'Inner corona'],
+  [hullLimitAltitude, 'Passive hull limit (see below)'],
   [10000 * KM, 'Low corona'],
   [2000 * KM, 'Top of the chromosphere'],
   [500 * KM, 'Temperature minimum'],
@@ -90,6 +101,7 @@ const profile = profileStops.map(([altitude, label]) => {
     angleDeg: Math.abs(sinAngle) < 1e-6 ? 0 : (Math.asin(Math.max(-1, Math.min(1, sinAngle))) * 180) / Math.PI,
     flux: solarFlux(state.dist),
     plateK: plateTemperature(state.dist),
+    sphereK: sphereTemperature(state.dist),
   }
 })
 const duration = (seconds) => {
@@ -104,6 +116,9 @@ const duration = (seconds) => {
 const height = (altitude) => altitude >= 0.05 * R_SUN ?
   `${f(altitude / R_SUN, 2)} Rs` : `${Math.round(altitude / KM).toLocaleString('en-US')} km`
 const chromosphere = profile.find((stop) => stop.altitude === 2000 * KM)
+const hullLimit = profile.find((stop) => stop.altitude === hullLimitAltitude)
+const kelvin = (k) => Math.round(k).toLocaleString('en-US')
+const overLimitK = Math.round((sphereTemperature(R_SUN) - HULL_LIMIT_K) / 10) * 10
 
 const families = mission.orbits.families
 const finalPeriRs = f(families[6].periapsis / R_SUN, 2)
@@ -197,11 +212,23 @@ const lines = [
   'well each is agreed, are in [psp-working-study.md](psp-working-study.md) section 4.',
   '',
   row('Crossing', 'Height above the photosphere', 'Time to go', 'Speed (km/s)', 'Angle below horizontal',
-      'Sunlight', 'Black-plate temperature (K)'),
-  row('---', '---', '---', '---', '---', '---', '---'),
+      'Sunlight', 'Sun-facing plate (K)', 'Whole sphere (K)'),
+  row('---', '---', '---', '---', '---', '---', '---', '---'),
   ...profile.map((stop) => row(
       stop.label, height(stop.altitude), duration(stop.secondsToGo), f(stop.speedKms), `${f(stop.angleDeg)}°`,
-      `${mw(stop.flux)} (${suns(stop.flux)} suns)`, Math.round(stop.plateK).toLocaleString('en-US'))),
+      `${mw(stop.flux)} (${suns(stop.flux)} suns)`, kelvin(stop.plateK), kelvin(stop.sphereK))),
+  '',
+  'The two temperatures are radiative equilibrium with nothing done about it: a black plate facing the',
+  'Sun with an insulated back, and a grey sphere radiating from its whole surface, which is the',
+  'lander\'s shape.',
+  '',
+  `**Passive hull limit.** The concept's hull material melts near 4,100 °C (${kelvin(HULL_LIMIT_K)} K). The sphere`,
+  `reaches that by sunlight alone ${height(hullLimit.altitude)} (${kelvin(hullLimit.altitude / KM)} km) above the photosphere,`,
+  `${duration(hullLimit.secondsToGo)} before arrival, and would settle at ${kelvin(sphereTemperature(R_SUN))} K at the photosphere itself.`,
+  `That is about ${overLimitK} K over the limit, a narrower gap than the 1,400 °C the concept doc`,
+  'works from, because half the sphere\'s sky is still cold space until it sinks into the gas.',
+  'Everything below that height has to be paid for by ablation, active cooling or reflectivity; this',
+  'counts sunlight only, not the heating from moving through the gas at 600 km/s.',
   '',
   'A minimum-energy descent arrives level, not falling: it spends its last',
   `${duration(chromosphere.secondsToGo)} below 2,000 km, skimming about`,

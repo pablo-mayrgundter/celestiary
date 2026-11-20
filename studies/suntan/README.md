@@ -92,6 +92,9 @@ Details and tables are in [trajectory.md](trajectory.md).
 - **The lander reaches the photosphere at about 610 km/s whatever the route.**
 - **A minimum-energy descent arrives level, not falling:** the last 2,000 km take about two
   minutes and 76,000 km of travel round the Sun.
+- **Sunlight alone takes a bare hull past its melting point 44,000 km up**, ten minutes before
+  arrival. At the photosphere a sphere settles near 4,850 K, about 480 K over the concept's
+  4,100 °C limit rather than 1,400.
 - **A minimum-energy descent lands where the relay cannot see it.**
 
 

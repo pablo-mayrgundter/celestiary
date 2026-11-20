@@ -14,10 +14,13 @@ import {
 import {planetState} from './ephemeris'
 import {
   SOLAR_CONSTANT,
+  T_EFF_SUN,
   VENUS_FLYBYS,
   buildMission,
   solarFlux,
   solarRotationPeriod,
+  sphereTemperature,
+  sphereTemperatureDistance,
 } from './mission'
 
 
@@ -58,6 +61,22 @@ describe('ephemeris', () => {
     expect(norm(planetState('venus', t).r) / AU).toBeLessThan(0.729)
     expect(norm(planetState('earth', t).r) / AU).toBeGreaterThan(0.983)
     expect(norm(planetState('earth', t).r) / AU).toBeLessThan(1.017)
+  })
+})
+
+
+describe('thermal', () => {
+  it('gives a grey sphere its textbook equilibrium temperatures', () => {
+    // About 279 K at Earth's distance; half the sky is Sun at the photosphere.
+    expect(sphereTemperature(AU)).toBeCloseTo(278.3, 0)
+    expect(sphereTemperature(R_SUN)).toBeCloseTo(T_EFF_SUN / Math.pow(2, 0.25), 6)
+  })
+
+  it('inverts temperature to distance', () => {
+    for (const kelvin of [300, 1650, 4373]) {
+      expect(sphereTemperature(sphereTemperatureDistance(kelvin))).toBeCloseTo(kelvin, 6)
+    }
+    expect(sphereTemperatureDistance(5000)).toBe(R_SUN)
   })
 })
 
