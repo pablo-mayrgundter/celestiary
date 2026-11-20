@@ -85,6 +85,25 @@ Alternatives the model sizes but does not animate:
 | Time spent inside Parker's closest approach | 8.2 hours |
 | Relay-to-lander angle at arrival | 113.7° (horizon is 88.4°): **not visible** |
 
+The descent by altitude. Layer names are the standard picture's; their temperatures, and how
+well each is agreed, are in [psp-working-study.md](psp-working-study.md) section 4.
+
+| Crossing | Height above the photosphere | Time to go | Speed (km/s) | Angle below horizontal | Sunlight | Black-plate temperature (K) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Release from the relay orbit | 34.47 Rs | 4.51 d | 17.2 | 0.0° | 50 kW/m² (37 suns) | 969 |
+| Parker's closest approach | 8.86 Rs | 8.2 h | 168.0 | 68.4° | 647 kW/m² (476 suns) | 1,838 |
+| One solar radius up | 1.00 Rs | 51.8 min | 424.6 | 44.2° | 15.7 MW/m² (11,561 suns) | 4,081 |
+| Inner corona | 0.10 Rs | 12.6 min | 580.0 | 17.3° | 52.0 MW/m² (38,218 suns) | 5,503 |
+| Low corona | 10,000 km | 4.7 min | 604.7 | 6.7° | 61.2 MW/m² (44,943 suns) | 5,731 |
+| Top of the chromosphere | 2,000 km | 2.1 min | 608.2 | 3.0° | 62.6 MW/m² (45,980 suns) | 5,764 |
+| Temperature minimum | 500 km | 1.0 min | 608.9 | 1.5° | 62.8 MW/m² (46,178 suns) | 5,770 |
+| Photosphere, optical depth 1 | 0 km | 0 s | 609.1 | 0.0° | 62.9 MW/m² (46,244 suns) | 5,772 |
+
+A minimum-energy descent arrives level, not falling: it spends its last
+2.1 min below 2,000 km, skimming about
+76,000 km round the Sun as it sinks.
+A straight drop crosses the same 2,000 km in about 3 seconds.
+
 Alternatives:
 
 | Option | Δv (km/s) | Arrival speed (km/s) | Note |

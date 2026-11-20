@@ -10,7 +10,7 @@
 import {writeFileSync} from 'node:fs'
 import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {AU, DAY, GM_SUN, R_SUN, TWO_PI, visViva} from '../js/suntan/kepler.js'
+import {AU, DAY, GM_SUN, R_SUN, TWO_PI, dot, visViva} from '../js/suntan/kepler.js'
 import {planetState} from '../js/suntan/ephemeris.js'
 import {SOLAR_CONSTANT, buildMission, plateTemperature, solarFlux} from '../js/suntan/mission.js'
 
@@ -52,6 +52,58 @@ const wheelRimKms = Math.sqrt((2 * FIBRE_STRENGTH) / FIBRE_DENSITY) / 1e3
 // equals the Sun's gravity: L / (2 pi c GM), independent of distance.
 const SPEED_OF_LIGHT = 299792458
 const sailLoading = (4 * Math.PI * R_SUN * R_SUN * n.fluxAtSurface) / (TWO_PI * SPEED_OF_LIGHT * GM_SUN)
+
+// The descent by altitude: when the lander crosses each height, how fast, how
+// steeply, and in how much sunlight.  The layer names are the standard
+// picture's; psp-working-study.md section 4 has their temperatures and how
+// well each is agreed.
+const KM = 1e3
+const profileStops = [
+  [descent.orbit.apoapsis - R_SUN, 'Release from the relay orbit'],
+  [pspPerihelion - R_SUN, 'Parker\'s closest approach'],
+  [R_SUN, 'One solar radius up'],
+  [0.1 * R_SUN, 'Inner corona'],
+  [10000 * KM, 'Low corona'],
+  [2000 * KM, 'Top of the chromosphere'],
+  [500 * KM, 'Temperature minimum'],
+  [0, 'Photosphere, optical depth 1'],
+]
+const profile = profileStops.map(([altitude, label]) => {
+  // Distance falls monotonically over the descent, so bisect for the crossing.
+  let [lo, hi] = [descent.t0, descent.t1]
+  for (let i = 0; i < 80; i++) {
+    const mid = (lo + hi) / 2
+    if (descent.stateAt(mid).dist > R_SUN + altitude) {
+      lo = mid
+    } else {
+      hi = mid
+    }
+  }
+  const state = descent.stateAt(hi)
+  const sinAngle = -dot(state.r, state.v) / (state.dist * state.speed)
+  return {
+    label,
+    altitude,
+    secondsToGo: descent.t1 - hi,
+    speedKms: state.speed / 1e3,
+    // Level at both apsides, where rounding leaves a signed zero.
+    angleDeg: Math.abs(sinAngle) < 1e-6 ? 0 : (Math.asin(Math.max(-1, Math.min(1, sinAngle))) * 180) / Math.PI,
+    flux: solarFlux(state.dist),
+    plateK: plateTemperature(state.dist),
+  }
+})
+const duration = (seconds) => {
+  if (seconds >= DAY) {
+    return `${f(seconds / DAY, 2)} d`
+  }
+  if (seconds >= 3600) {
+    return `${f(seconds / 3600)} h`
+  }
+  return seconds >= 60 ? `${f(seconds / 60)} min` : `${f(seconds, 0)} s`
+}
+const height = (altitude) => altitude >= 0.05 * R_SUN ?
+  `${f(altitude / R_SUN, 2)} Rs` : `${Math.round(altitude / KM).toLocaleString('en-US')} km`
+const chromosphere = profile.find((stop) => stop.altitude === 2000 * KM)
 
 const families = mission.orbits.families
 const finalPeriRs = f(families[6].periapsis / R_SUN, 2)
@@ -140,6 +192,21 @@ const lines = [
   row('Time spent inside Parker\'s closest approach', `${f(secondsInsidePsp / 3600)} hours`),
   row('Relay-to-lander angle at arrival',
       `${f(n.relayLanderSeparationDeg)}° (horizon is ${f(n.horizonDeg)}°): ${seen(n.relaySeesLander, true)}`),
+  '',
+  'The descent by altitude. Layer names are the standard picture\'s; their temperatures, and how',
+  'well each is agreed, are in [psp-working-study.md](psp-working-study.md) section 4.',
+  '',
+  row('Crossing', 'Height above the photosphere', 'Time to go', 'Speed (km/s)', 'Angle below horizontal',
+      'Sunlight', 'Black-plate temperature (K)'),
+  row('---', '---', '---', '---', '---', '---', '---'),
+  ...profile.map((stop) => row(
+      stop.label, height(stop.altitude), duration(stop.secondsToGo), f(stop.speedKms), `${f(stop.angleDeg)}°`,
+      `${mw(stop.flux)} (${suns(stop.flux)} suns)`, Math.round(stop.plateK).toLocaleString('en-US'))),
+  '',
+  'A minimum-energy descent arrives level, not falling: it spends its last',
+  `${duration(chromosphere.secondsToGo)} below 2,000 km, skimming about`,
+  `${Math.round((chromosphere.secondsToGo * chromosphere.speedKms) / 1e3).toLocaleString('en-US')},000 km round the Sun as it sinks.`,
+  `A straight drop crosses the same 2,000 km in about ${f(2000 / alt.radialDropArrivalKms, 0)} seconds.`,
   '',
   'Alternatives:',
   '',

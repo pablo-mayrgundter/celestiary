@@ -129,6 +129,7 @@ Full tables and plots: [trajectory.md](trajectory.md). Model: `js/suntan/mission
 - **Relay orbit from PSP's final orbit: 29.5 km/s** (9.2 km/s at aphelion, 20.3 km/s to circularize). Circularizing at perihelion 1 instead: 22.2 km/s.
 - **Lander from the relay orbit: 56.2 km/s to deorbit, 4.5 days to fall, 609 km/s on arrival.** From the final orbit's aphelion instead: 8.1 km/s, arriving at 616 km/s.
 - **The lander spends about 8 hours inside PSP's closest approach** on the way down, in sunlight rising from 0.65 to 63 MW/m².
+- **A minimum-energy descent arrives level, not falling.** It crosses the last 2,000 km (the chromosphere, in the standard picture of Section 4) in about two minutes while skimming some 76,000 km round the Sun; a straight drop crosses it in about three seconds. [trajectory.md](trajectory.md) section 3 has the descent by altitude.
 
 ---
 
