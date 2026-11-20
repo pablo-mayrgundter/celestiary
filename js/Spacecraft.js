@@ -54,8 +54,10 @@ export default class Spacecraft extends SceneObject {
     const relay = new Object3D
     relay.props = props
     relay.orbitPosition = relayPosition
-    // Far enough back to see the inner legs and the Sun behind the craft.
-    relay.initialCameraDistance = ASTRO_UNIT_METER / 3
+    // Read by Scene#goTo.  High above the orbit plane and a little behind the
+    // craft, so the first view takes in the Sun and the legs wherever the
+    // craft is between its 0.05 AU perihelion and 0.73 AU aphelion.
+    relay.initialCameraOffset = new Vector3(0, 1.6 * ASTRO_UNIT_METER, -0.3 * ASTRO_UNIT_METER)
     relay.add(newMarker('Suntan relay', 0x40ff90))
     relayPosition.add(relay)
     scene.objects[this.name] = relay

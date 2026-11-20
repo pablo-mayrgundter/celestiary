@@ -195,7 +195,14 @@ export default class Scene {
     const camDist = obj.initialCameraDistance || (surfaceAltitude * INITIAL_STEP_BACK_MULT)
     const elevationAngleRad = 15 / 360 * Math.PI * 2
     const y = Math.atan(elevationAngleRad) * camDist
-    cPos.set(0, y, camDist)
+    if (obj.initialCameraOffset) {
+      // Platform space: +Z is toward the Sun, +Y is ecliptic north.  A
+      // spacecraft asks to be seen from above and behind, with the Sun and
+      // its trajectory beyond it, where a planet is seen from its lit side.
+      cPos.copy(obj.initialCameraOffset)
+    } else {
+      cPos.set(0, y, camDist)
+    }
     obj.orbitPosition.add(this.ui.camera.platform)
     this.ui.camera.platform.position.copy(pPos)
     this.ui.camera.platform.lookAt(Shared.targets.origin)

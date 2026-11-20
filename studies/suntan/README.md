@@ -58,9 +58,8 @@ yarn serve
 ```
 
 Then open `http://localhost:8080/#sun/suntan`. At today's date the craft is on PSP's final 88-day
-orbit, about where PSP really is. The app's default view of any target looks outward from the
-Sun's side, so drag the camera up above the orbit plane to see the legs laid out as in the
-screenshots. Use the fast-forward control to run time on; the Suntan burns
+orbit, about where PSP really is. The first view is from above and behind the craft, with the
+Sun and the legs beyond it. Use the fast-forward control to run time on; the Suntan burns
 start on 2027-01-15 and the lander is released on 2027-04-29. To jump, in the browser console:
 
 ```js
