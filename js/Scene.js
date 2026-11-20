@@ -6,6 +6,7 @@ import {
 } from 'three'
 import Asterisms from './Asterisms.js'
 import Planet from './Planet.js'
+import Spacecraft from './Spacecraft.js'
 import Star from './Star.js'
 import Stars from './Stars.js'
 import * as Shared from './shared.js'
@@ -73,6 +74,7 @@ export default class Scene {
       case 'star': return new Star(props, this.objects, this.ui)
       case 'planet': return new Planet(this, props)
       case 'moon': return new Planet(this, props, true)
+      case 'spacecraft': return new Spacecraft(this, props)
       default:
     }
     throw new Error(`Object has unknown type: ${props.type}`)

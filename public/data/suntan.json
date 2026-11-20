@@ -1,0 +1,9 @@
+{
+"type":"spacecraft",
+"name":"suntan",
+"parent":"sun",
+"description": "Concept study: a Parker Solar Probe trajectory, then a sun-synchronous relay orbit and a lander to the photosphere. See studies/suntan/.",
+"mass": "6.85E5 g",
+"radius": "1.5 m",
+"system": []
+}
