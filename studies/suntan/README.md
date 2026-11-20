@@ -90,6 +90,8 @@ Details and tables are in [trajectory.md](trajectory.md).
 - **Getting there costs 22–30 km/s of propulsion**, because Venus flybys cannot circularize an
   orbit that close in. That is the relay's main open design problem.
 - **The lander reaches the photosphere at about 610 km/s whatever the route.**
+- **A minimum-energy descent arrives level, not falling:** the last 2,000 km take about two
+  minutes and 76,000 km of travel round the Sun.
 - **A minimum-energy descent lands where the relay cannot see it.**
 
 

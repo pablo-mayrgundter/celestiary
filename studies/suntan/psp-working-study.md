@@ -133,27 +133,55 @@ Full tables and plots: [trajectory.md](trajectory.md). Model: `js/suntan/mission
 
 ---
 
-## Appendix: gaps the web pass could not reach, from memory
+## Appendix: follow-up on the gaps
 
-The research above could only fetch `science.nasa.gov`; the network allowlist blocked JHUAPL,
-Wikipedia and the journals. These are the items it marked unfound, filled in from memory. **None
-was checked against a source in this session.** Treat each as a pointer to verify, not a fact.
+The research above could only open `science.nasa.gov`; the network allowlist blocked JHUAPL,
+Wikipedia and the journals, so it left several engineering items unfound. This is a second pass
+at those. Each line is either **sourced** from a web search, or **from memory**. For the sourced
+lines I read the search result's summary, not the page itself, so open the link before relying on
+a number.
 
-- **Propulsion:** hydrazine monopropellant, about 55 kg, twelve small thrusters. That is roughly
-  0.2 km/s of Δv on a 685 kg craft (55 kg at a specific impulse near 220 s), which is the number
-  to set against the 22–30 km/s the relay orbit needs (Section 6).
-- **Heat shield:** 2.3 m across and 11.4 cm thick; the truss holds it at six points.
-- **Solar arrays:** two, about 1.55 m² in total, cooled by pressurized deionized water through
-  four radiators mounted on the shield truss.
-- **Shadow keeping:** seven solar limb sensors around the edge of the bus detect sunlight if the
-  craft tips out of the shield's shadow, and the craft corrects its attitude without the ground.
-- **High-gain antenna:** 0.6 m, Ka-band for science data, X-band for commanding.
-- **Solar Probe Cup:** a Faraday cup that looks round the shield. Tungsten grids, a niobium alloy
-  (C-103) and molybdenum alloy (TZM) body, sapphire insulators, niobium wiring.
-- **FIELDS antennas:** four 2 m whips of niobium C-103 that extend past the shield into sunlight
-  and run at well over 1,000 °C, plus a fifth on the magnetometer boom.
-- **Dust:** WISPR saw the dust thin out toward the Sun (Howard et al., Nature, 2019), consistent
-  with a long-predicted dust-free zone within a few solar radii.
-- **Plasma near perihelion:** proton temperatures of several 10⁵ to about 10⁶ K, electron
-  densities of 10³–10⁴ per cm³, magnetic field of order 1,000 nT, in a wind still accelerating
-  at 100–300 km/s.
+- **Thrusters (sourced):** twelve hydrazine monopropellant thrusters of 4.4 N each
+  ([SPASE observatory page](https://spase-group.github.io/spase-info/SMWG/Observatory/ParkerSolarProbe.html);
+  [L3Harris](https://www.l3harris.com/newsroom/editorial/2024/12/l3harris-thrusters-position-nasa-probe-closest-approaches-sun)).
+- **Propellant and Δv (sources disagree):** the SPASE page gives 685 kg at launch including 130 kg
+  of propellant; a blog table gives 555 kg dry and 53–85 kg of hydrazine. The 2008 Solar Probe+
+  engineering study budgeted 190 m/s
+  ([archived PDF](https://webarchive.library.unt.edu/web/20130214082445/http:/solarprobe.gsfc.nasa.gov/SolarProbe+ME.pdf)).
+  Even 130 kg of hydrazine on a 685 kg craft is under 0.5 km/s (my arithmetic, specific impulse
+  near 220 s), against the 22–30 km/s the relay orbit needs (Section 6).
+- **Heat shield (sourced):** 2.3 m wide and 11.4 cm thick
+  ([ScienceABC](https://www.scienceabc.com/nature/universe/how-did-the-parker-solar-probe-touch-the-sun-without-melting.html)),
+  attached to the truss at six points
+  ([Interesting Engineering](https://interestingengineering.com/everything-you-need-to-know-about-nasas-cooling-systems-that-will-keep-parker-solar-probe-from-melting-in-the-sun)).
+- **Solar arrays and cooling (sourced):** two arrays totalling 1.55 m² (Interesting Engineering,
+  above). Water runs through mini-channels in the arrays and out to four radiators
+  ([NASA](https://science.nasa.gov/blogs/parker-solar-probe/2018/09/14/parker-solar-probes-solar-array-cooling-system-fully-activated)),
+  which are titanium tubes with thin aluminium fins. The coolant is about five litres of
+  pressurized deionized water
+  ([Electronic Specifier](https://www.electronicspecifier.com/?p=64629)).
+- **Shadow keeping (sourced, count disputed):** solar limb sensors report any "umbra violation"
+  and the craft corrects its attitude without the ground
+  ([NASA blog](https://blogs.nasa.gov/parkersolarprobe/page/7/?ilink=1)). The supplier lists seven
+  limb sensor heads plus two digital sun sensor heads
+  ([Redwire](https://redwirespace.com/newsroom/redwire-technology-helps-guide-humanitys-first-visit-to-a-star));
+  Wikipedia and a 2013 fault-management review say four.
+- **Solar Probe Cup (sourced):** a Faraday cup outside the shield's shadow. Tungsten grids, a
+  molybdenum-alloy (TZM) housing, niobium parts and sapphire insulators
+  ([Case et al., arXiv 1912.02581](https://arxiv.org/pdf/1912.02581);
+  [NASA](https://www.nasa.gov/science-research/heliophysics/traveling-to-the-sun-why-wont-parker-solar-probe-melt/)).
+  The sources differ on which parts are niobium.
+- **FIELDS antennas (sourced):** four 2 m whips of niobium alloy C-103 (V1–V4) outside the shield,
+  at about 2,500 °F (1,370 °C), and a fifth sensor on the magnetometer boom
+  ([Wikipedia](https://en.wikipedia.org/wiki/FIELDS);
+  [Berkeley SSL](https://www.ssl.berkeley.edu/sun-heliophysics/psp-fields/)).
+- **Dust (sourced):** WISPR saw the F-corona dim toward the Sun in the first two perihelia,
+  "suggestive of the long-sought dust free zone"
+  ([Howard et al. 2019, Nature 576, 232](https://dx.doi.org/10.1038/s41586-019-1807-x)). Press
+  coverage puts the thinning from about 7 million miles in, with less still by 4 million
+  ([ScienceDaily](https://www.sciencedaily.com/releases/2019/12/191204152831.htm)); that is
+  roughly 16 and 9 solar radii (my conversion).
+- **High-gain antenna (from memory):** 0.6 m, Ka-band for science data, X-band for commanding.
+- **Plasma near perihelion (from memory):** proton temperatures of several 10⁵ to about 10⁶ K,
+  electron densities of 10³–10⁴ per cm³, magnetic field of order 1,000 nT, in a wind still
+  accelerating at 100–300 km/s.
