@@ -10,7 +10,7 @@ edits the concept doc; it is the material to fold into it.
 | [trajectory.md](trajectory.md) | The simulated trajectory's numbers: how well it reproduces PSP, the relay orbit, the lander descent, the alternatives. Generated. |
 | [trajectory.svg](trajectory.svg), [trajectory-inner.svg](trajectory-inner.svg) | Top-down plots of the same. Generated. |
 | [celestiary-psp-phase.png](celestiary-psp-phase.png), [celestiary-descent.png](celestiary-descent.png) | The craft in the celestiary scene, during the PSP phase and during the lander's fall. |
-| [cad/](cad/) | The STEP assembly of the flight system and its generator, for Bldrs Share. |
+| [cad/](cad/) | The STEP assembly of the flight system, its generator, and screenshots of it in Bldrs Share. |
 
 
 ## What celestiary already had
@@ -91,6 +91,29 @@ Details and tables are in [trajectory.md](trajectory.md).
   orbit that close in. That is the relay's main open design problem.
 - **The lander reaches the photosphere at about 610 km/s whatever the route.**
 - **A minimum-energy descent lands where the relay cannot see it.**
+
+
+## The CAD model in Bldrs Share
+
+`cad/suntan.step` is an AP214 assembly of the flight system: the PSP-derived relay orbiter and a
+sling wheel carrying four landers. [cad/README.md](cad/README.md) has the layout, the parts and
+mass table, and how it was validated against Share's engine.
+
+Checked in a local build of Share: it opens in about four seconds, 82 placed parts drawn as
+150,353 triangles from 33,684 unique ones (repeated parts are stored once), and the part tree
+reads Suntan > Orbiter and Sling wheel > Lander ×4.
+
+- **Open it:** drag `cad/suntan.step` onto Share. Once this is on GitHub it also opens by URL,
+  as `/share/v/gh/pablo-mayrgundter/celestiary/<branch>/studies/suntan/cad/suntan.step`.
+- **Part tree:** the Navigation button, top left
+  ([screenshot](cad/share-suntan-navtree.png)).
+- **Section the landers:** turn on the X cut plane, or add `#cp:x` to the URL
+  ([screenshot](cad/share-suntan-cut-x.png)).
+- **Go straight to a sectioned lander:** add
+  `#cp:x;c:2.37246,-7.73909,2.52042,1.3889,-8.72265,1.53686`
+  ([screenshot](cad/share-suntan-lander-section.png)). From outside in: ablator, hafnium
+  carbonitride hull, coolant plenum, insulation, instrument core, with the diamond window port at
+  the bottom and the magnet coils around it.
 
 
 ## Limits of the model
