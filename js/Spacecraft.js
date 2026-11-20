@@ -67,6 +67,18 @@ export default class Spacecraft extends SceneObject {
     landerPosition.add(newMarker('Suntan lander', 0xff3050))
     this.add(landerPosition)
 
+    // The Suntan app's switch (js/store/SuntanSlice.js) shows and hides the
+    // whole craft: paths, markers and labels.  No store means a test or a
+    // guide page, where it simply stays visible.
+    const useStore = scene.ui && scene.ui.useStore
+    if (useStore) {
+      const applyActive = (state) => {
+        this.visible = state.isSuntanActive
+      }
+      applyActive(useStore.getState())
+      useStore.subscribe(applyActive)
+    }
+
     this.preAnimCb = (time) => {
       const t = time.simTime / 1000
       place(relayPosition, this.mission.stateAt(t, 'relay'))

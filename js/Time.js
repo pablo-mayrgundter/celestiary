@@ -52,6 +52,10 @@ export default class Time {
   /** @param {number} unixTime In seconds */
   setTime(unixTime) {
     this.simTime = unixTime
+    // Show it at once.  updateTime only refreshes the date string while time
+    // is running, so a jump made while paused would otherwise leave the old
+    // date on screen.
+    this.setTimeStr(timeToDateStr(this.simTime))
   }
 
 

@@ -8,18 +8,22 @@ import Celestiary from './Celestiary'
 import useStore from './store/useStore'
 import About from './ui/About'
 import Settings from './ui/Settings'
+import SuntanPanel from './ui/SuntanPanel'
 import TimePanel from './ui/TimePanel'
 import TooltipToggleButton from './ui/TooltipToggleButton'
 import {setTitleFromLocation} from './utils'
 import SettingsIcon from '@mui/icons-material/Settings'
 import StarsIcon from '@mui/icons-material/AutoAwesome'
 import StarSelectIcon from '@mui/icons-material/SavedSearch'
+import SuntanIcon from '@mui/icons-material/RocketLaunch'
 import './index.css'
 
 
 /** @returns {ReactElement} */
 export default function App() {
   const toggleIsStarsSelectActive = useStore((state) => state.toggleIsStarsSelectActive)
+  const isSuntanActive = useStore((state) => state.isSuntanActive)
+  const toggleIsSuntanActive = useStore((state) => state.toggleIsSuntanActive)
   const [celestiary, setCelestiary] = useState(null)
   const [isPaused, setIsPaused] = useState(false)
   const [timeStr, setTimeStr] = useState('')
@@ -37,6 +41,14 @@ export default function App() {
     setCelestiary(c)
     c.keys.map('?', () => navigate('/settings'), 'Show keyboard shortcuts')
   }, [])
+
+  // Turning the Suntan app on also takes the camera to the craft.
+  const onSuntanClick = () => {
+    if (!isSuntanActive && !window.location.hash.includes('suntan')) {
+      window.location.hash = 'sun/suntan'
+    }
+    toggleIsSuntanActive()
+  }
 
   return (
     <>
@@ -60,6 +72,15 @@ export default function App() {
           }
         </div>
         <TooltipToggleButton tip='select' icon={<StarSelectIcon/>} onClick={toggleIsStarsSelectActive}/>
+        <TooltipToggleButton
+          tip='Suntan mission'
+          icon={<SuntanIcon/>}
+          onClick={onSuntanClick}
+          selected={isSuntanActive}
+          data-testid='suntan-toggle'
+        />
+        {celestiary && isSuntanActive &&
+          <SuntanPanel time={celestiary.time} isPaused={isPaused} setIsPaused={setIsPaused}/>}
       </Stack>
       <h1 id='target-id'> </h1>
     </>)

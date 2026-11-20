@@ -10,6 +10,7 @@ edits the concept doc; it is the material to fold into it.
 | [trajectory.md](trajectory.md) | The simulated trajectory's numbers: how well it reproduces PSP, the relay orbit, the lander descent, the alternatives. Generated. |
 | [trajectory.svg](trajectory.svg), [trajectory-inner.svg](trajectory-inner.svg) | Top-down plots of the same. Generated. |
 | [celestiary-psp-phase.png](celestiary-psp-phase.png), [celestiary-descent.png](celestiary-descent.png) | The craft in the celestiary scene, during the PSP phase and during the lander's fall. |
+| [celestiary-suntan-app.png](celestiary-suntan-app.png) | The Suntan app panel: play controls and the lander's sensor readings at its release. |
 | [cad/](cad/) | The STEP assembly of the flight system, its generator, and screenshots of it in Bldrs Share. |
 
 
@@ -39,11 +40,18 @@ spacecraft object type, or any way to chain orbit legs.
   model runs the same in tests and in the browser.
 - `js/suntan/mission.js`: the mission as a chain of legs, the burns, the comparison numbers, and
   `stateAt(time, vehicle)`. Its header says which legs are solved, reconstructed or assumed.
-- `js/suntan/mission.test.js`: 14 tests, including the checks against PSP.
+- `js/suntan/sensors.js`: what an instrument would read at a point on the trajectory. Ambient gas
+  temperature by layer, each with the agreement rating from the study; solar wind speed; and the
+  magnetic field, a Parker spiral outside a 2.5 Rs source surface and dipole-like inside it.
+- `js/suntan/events.js`: the mission's named moments (launch, flybys, burns, arrival), for
+  stepping through it.
+- Tests beside each module (`bun test js/suntan`), including the checks against PSP.
 - `js/Spacecraft.js`, plus a `spacecraft` case in `Scene#objectFactory`: draws each leg and moves a
   relay marker and a lander marker from `preAnimCb`.
 - `public/data/suntan.json`, and `suntan` added to the Sun's `system` list, so it loads with the
   solar system and is a navigation target.
+- The Suntan app (`js/ui/SuntanPanel.jsx`, `js/store/SuntanSlice.js`): a switch that shows or
+  hides the craft and its panel, mission play controls, and the sensor readings. Off by default.
 - `tools/suntanReport.mjs`: regenerates `trajectory.md` and the two plots.
 
 
@@ -59,12 +67,12 @@ yarn serve
 
 Then open `http://localhost:8080/#sun/suntan`. At today's date the craft is on PSP's final 88-day
 orbit, about where PSP really is. The first view is from above and behind the craft, with the
-Sun and the legs beyond it. Use the fast-forward control to run time on; the Suntan burns
-start on 2027-01-15 and the lander is released on 2027-04-29. To jump, in the browser console:
+Sun and the legs beyond it.
 
-```js
-c.time.setTime(Date.parse('2027-04-29T00:00:00Z'))
-```
+The craft is hidden until the Suntan app is on: the rocket button at the top right, or opening
+the page at `#sun/suntan`. Its panel steps between mission events, sets the speed, scrubs the
+timeline, and shows the relay's or the lander's sensor readings. The Suntan burns start on
+2027-01-15 and the lander is released on 2027-04-29.
 
 ```bash
 bun test js/suntan
@@ -129,6 +137,9 @@ reads Suntan > Orbiter and Sling wheel > Lander ×4.
 - Burns are impulsive and sized, not optimized. Low-thrust or sail trajectories, which are the
   realistic way to pay for the relay orbit, are not modelled.
 - The lander "at the photosphere" simply co-rotates. Nothing models the entry.
+- The sensors read smooth averages of the standard picture: no active regions, flares, mass
+  ejections or magnetic sectors, and no condensed surface. Where the standard picture is itself
+  disputed, the reading's agreement rating says so.
 - In the app, planet orbit lines are Sun-centred ellipses (existing behaviour), so the craft's path
   and Venus's drawn orbit line do not cross exactly where the flyby happens, even though the
   craft and the Venus body do meet.
